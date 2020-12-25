@@ -1,0 +1,34 @@
+version: '3'
+services:
+  web:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build: 
+      # specifying where we want our folders to come from
+      context: .
+      # location of the dockerfile used to construct the image
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    volumes:
+      # do not try to map a folder up against app/node_modules inside the container
+      - /app/node_modules
+      # map the current folder outside the container into the app folder inside the container
+      - .:/app
+  
+  # sole purpose is to run our tests
+  tests:
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build: 
+      # specifying where we want our folders to come from
+      context: .
+      # location of the dockerfile used to construct the image
+      dockerfile: Dockerfile.dev
+    volumes:
+      # do not try to map a folder up against app/node_modules inside the container
+      - /app/node_modules
+      # map the current folder outside the container into the app folder inside the container
+      - .:/app
+    # override a command 
+    command: ['npm', 'run', 'test']

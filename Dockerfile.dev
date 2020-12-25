@@ -1,0 +1,11 @@
+# .dev makes sure that this dockerfile is used only in a development environment
+FROM node:alpine
+
+WORKDIR '/app'
+
+COPY package.json .
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "start"]
